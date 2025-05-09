@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import requests
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -21,3 +22,19 @@ def tool2(data: RequestData):
 @app.get("/")
 def root():
     return {"message": "health check 🚀"}
+
+# Nowy kod do wywołania narzędzi i odpowiedzi agenta
+@app.post("/run_agent")
+def run_agent():
+    # Wywołanie tool1
+    tool1_response = requests.post("https://twoja-aplikacja.com/tool1", json={"input": "data"})
+    team_members = tool1_response.json().get("output")
+
+    # Wywołanie tool2
+    tool2_response = requests.post("https://twoja-aplikacja.com/tool2", json={"input": "data"})
+    university_and_sponsor = tool2_response.json().get("output")
+
+    # Łączenie danych
+    answer = f"{university_and_sponsor}, zespół: {team_members}"
+
+    return {"action": "answer", "value": answer}
