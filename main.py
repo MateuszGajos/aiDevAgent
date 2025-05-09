@@ -17,3 +17,7 @@ def tool2(data: RequestData):
     if data.input.startswith("test"):
         return {"output": data.input}
     return {"output": "Politechnika Warszawska, sponsor: FutureTech Foundation"}
+
+@app.get("/")
+def root():
+    return {"message": "health check 🚀"}
